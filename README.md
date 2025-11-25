@@ -1,117 +1,72 @@
-<h1 align="center"> 🚶IU8-QueueBot🚶🚶 </h1>
-
-[comment]: <> (Badges)
+<h1 align="center">Queue Bot 🤖</h1>
 
 <p align="center">
-  <a href="https://img.shields.io/badge/aiogram-v.2.17.1-orange?style=plastic">
-    <img alt="Aiogram" src="https://img.shields.io/badge/aiogram-v.2.17.1-orange?style=plastic">
-  </a>
-  <a href="https://github.com/aaaaaaaalesha/iu8_queue_bot/deployments/activity_log?environment=iu8-queue-bot">
-    <img alt="Deployment" src="https://img.shields.io/github/deployments/aaaaaaaalesha/iu8_queue_bot/iu8-queue-bot?style=plastic">
-  </a>
-  <a href="https://www.npmjs.com/package/readme-md-generator">
-    <img alt="Build Status" src="https://github.com/aaaaaaaalesha/iu8_queue_bot/actions/workflows/main.yaml/badge.svg">
-  </a>
-  <a href="https://www.codefactor.io/repository/github/aaaaaaaalesha/iu8_queue_bot/overview/main">
-    <img alt="CodeFactor" src="https://www.codefactor.io/repository/github/aaaaaaaalesha/iu8_queue_bot/badge/main?style=plastic">
-  </a>
-  <a href="https://img.shields.io/github/languages/code-size/aaaaaaaalesha/iu8_queue_bot?style=plastic">
-    <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/aaaaaaaalesha/iu8_queue_bot?style=plastic">
-  </a>
-  <a href="https://img.shields.io/github/stars/aaaaaaaalesha/iu8_queue_bot?style=plastic">
-    <img alt="Stars" src="https://img.shields.io/github/stars/aaaaaaaalesha/iu8_queue_bot?style=plastic" />
-  </a>
-  <a href="https://img.shields.io/github/watchers/aaaaaaaalesha/iu8_queue_bot?style=plastic">
-    <img alt="GitHubWatchers" src="https://img.shields.io/github/watchers/aaaaaaaalesha/iu8_queue_bot?style=plastic">
-  </a>
+  <img src="public/logo_gemini_original.png" alt="Queue Bot Logo" width="200"/>
 </p>
 
-[comment]: <> (Logo)
 <p align="center">
-  <a href="https://t.me/iu8_queue_bot">
-    <img alt="queue_bot" height="200" width="200" src="https://user-images.githubusercontent.com/55093100/147390446-d783063a-e68e-4caa-9711-731c13a9fd2d.png"/>
+  <a href="https://t.me/QueueBest_bot">
+    <img src="https://img.shields.io/badge/Telegram-Bot-blue?style=for-the-badge&logo=telegram" alt="Telegram Bot">
   </a>
+  <img src="https://img.shields.io/badge/python-3.8-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/docker-ready-blue?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
 </p>
 
-[comment]: <> (Techs)
 <p align="center">
-  <a href="#">
-    <img alt="Python" src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54">
-  </a>
-  <a href="#">
-    <img alt="SQLite" src="https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white">
-  </a>
-  <a href="#">
-    <img alt="GitHub Actions" src="https://img.shields.io/badge/githubactions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white">
-  </a>
-  <a href="#">
-    <img alt="Heroku" src="https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white">
-  </a>
+    <b>Современный и удобный бот для управления очередями в групповых чатах Telegram.</b>
 </p>
 
 ---
 
-## Телеграм-бот для создания очередей в групповых чатах
+## ✨ Особенности
 
-Этот бот поможет запланировать очередь на определённую дату и время, своевременно запустить её в вашем групповом чате!
+*   🚀 **Мгновенное создание очередей**: Просто введите команду и название.
+*   👥 **Работа в группах и супергруппах**: Полная поддержка топиков (Topics).
+*   🐳 **Docker**: Легкая установка и запуск одной командой.
+*   📱 **Интерактивный интерфейс**: Кнопки для записи, пропуска и перемещения в очереди.
 
-Попробуйте [@iu8_queue_bot](https://t.me/iu8_queue_bot) сами, а если возникли вопросы, смотрите, как пользоваться ботом,
-ниже.
+## 🛠 Установка и запуск (Docker)
 
-## Запуск через Docker
+Самый простой способ запустить бота — использовать Docker.
 
-Для запуска бота на сервере используйте Docker. Это самый простой способ.
-
-1.  **Установите Docker и Docker Compose**.
-2.  **Клонируйте репозиторий**:
+1.  **Клонируйте репозиторий**:
     ```bash
-    git clone https://github.com/aaaaaaaalesha/iu8_queue_bot.git
+    git clone https://github.com/shorins/iu8_queue_bot.git
     cd iu8_queue_bot
     ```
-3.  **Создайте файл `.env`**:
+
+2.  **Настройте окружение**:
+    Создайте файл `.env` из примера:
     ```bash
     cp .env.example .env
-    # Отредактируйте .env и вставьте ваш токен
     ```
-4.  **Запустите бота**:
+    Откройте `.env` и укажите ваш `TELE_API_TOKEN`.
+
+3.  **Запустите**:
     ```bash
     docker-compose up -d --build
     ```
 
-Бот запустится в фоне. Данные базы данных будут сохранены в папке `db_data`.
+Бот запустится и будет хранить данные в папке `db_data`.
 
-## Как пользоваться?
+## 📖 Как пользоваться
 
-### 1. Начало работы
-Добавьте бота [@iu8_queue_bot](https://t.me/iu8_queue_bot) в ваш групповой чат.
+1.  **Добавьте бота** [@QueueBest_bot](https://t.me/QueueBest_bot) в вашу группу.
+2.  **Дайте права**: Рекомендуется сделать бота администратором для удаления служебных сообщений.
+3.  **Создайте очередь**:
+    *   Введите `/create_queue` или `/plan_queue`.
+    *   Введите название очереди.
+4.  **Управляйте**: Используйте кнопки под сообщением очереди.
 
-### 2. Создание очереди
-Любой участник группы может создать очередь. Для этого:
-1. Отправьте команду `/create_queue` (или `/plan_queue`) прямо в групповой чат.
-2. Бот попросит ввести **название очереди**.
-3. После ввода названия очередь **сразу же запустится**.
+## 👨‍💻 Авторы
 
-### 3. Участие в очереди
-Когда очередь запущена, в чате появится сообщение с кнопками:
-- **Записаться**: Добавить себя в конец очереди.
-- **Выписаться**: Удалить себя из очереди.
-- **В хвост**: Переместиться в конец очереди.
-- **Пропустить**: Поменяться местами со следующим участником.
-- **Список**: Обновляется в реальном времени в сообщении бота.
+**Original Project (2021):**
+*   [Alexey Alexandrov](https://github.com/aaaaaaaalesha) — *Initial work & Core logic*
 
-### Команды
-- `/start` - Начало работы
-- `/help` - Помощь
-- `/create_queue` - Создать очередь (только в группе)
-- `/queues_list` - Посмотреть запланированные очереди
-- `/delete_queue` - Удалить очередь (для создателя)
+**Fork & Maintenance (2025):**
+*   [Sergey Shorin](https://github.com/shorins) — *Dockerization, Topics support, Refactoring & UI improvements*
 
-## Author
-
-#### Copyright © 2021, [Alexey Alexandrov](https://github.com/aaaaaaaalesha)
-
-[![Telegram](https://img.shields.io/badge/aaaaaaaalesha-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/aaaaaaaalesha)
-<a href="mailto:sks2311211@mail.ru">
-<img alt="build status" src="https://img.shields.io/badge/-sks2311211@mail.ru-c14438?style=flat&logo=Gmail&logoColor=white&link=mailto:sks2311211@mail.ru" />
-</a>
-
+---
+<p align="center">
+  <i>Developed with ❤️ for efficient teamwork.</i>
+</p>
