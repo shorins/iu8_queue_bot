@@ -1,3 +1,4 @@
+import os
 import asyncio
 
 from aiogram import types, Dispatcher
@@ -5,7 +6,7 @@ from aiogram.dispatcher.filters import Text
 from aiogram.utils.exceptions import RetryAfter
 
 from create_bot import dp, bot
-from keyboards.client_kb import main_kb, queue_inl_kb, ABOUT_DEV_TEXT
+from keyboards.client_kb import main_kb, queue_inl_kb, ABOUT_DEV_TEXT, HELP_TEXT
 from services import client_service
 
 
@@ -13,17 +14,40 @@ async def start_handler(message: types.Message):
     """
     Handler for `/start` command.
     """
-    await bot.send_message(message.from_user.id,
-                           f"👋 Привет, {message.from_user.first_name} (@{message.from_user.username})!\n"
-                           f"🤖 Я Queue Bot - бот для создания очередей.\n"
-                           "✨ Важное примечание: я работаю только в групповых чатах 👥.\n"
-                           "Для создания новой очереди, пожалуйста, добавьте меня в нужную группу "
-                           "и используйте команды /create_queue или /plan_queue.\n"
-                           "❓ Если у вас возникнут вопросы или проблемы, пишите @shorinss.\n\n"
-                           "💡 Если вы хотите, чтобы я мог удалять сообщения настройки очередей, "
-                           "пожалуйста, сделайте меня администратором с правом удаления сообщений.",
-                           reply_markup=main_kb
-                           )
+    logo_file_id = os.getenv('LOGO_PIC')
+    
+    caption_text = (
+        f"👋 Привет, {message.from_user.first_name} (@{message.from_user.username})!\n"
+        f"🤖 Я Queue Bot - бот для создания очередей.\n"
+        "✨ Важное примечание: я работаю только в групповых чатах 👥.\n"
+        "Для создания новой очереди, пожалуйста, добавьте меня в нужную группу "
+        "и используйте команды\n/create_queue или /plan_queue.\n"
+        "❓ Если у вас возникнут вопросы или проблемы, пишите @shorinss.\n\n"
+        "💡 Если вы хотите, чтобы я мог удалять сообщения настройки очередей, "
+        "пожалуйста, сделайте меня администратором с правом удаления сообщений."
+    )
+
+    if logo_file_id:
+        try:
+            await bot.send_animation(
+                message.from_user.id,
+                animation=logo_file_id,
+                caption=caption_text,
+                reply_markup=main_kb
+            )
+        except Exception:
+             # Fallback if ID is invalid
+            await bot.send_message(
+                message.from_user.id,
+                caption_text,
+                reply_markup=main_kb
+            )
+    else:
+        await bot.send_message(
+            message.from_user.id,
+            caption_text,
+            reply_markup=main_kb
+        )
 
 
 async def about_dev_handler(message: types.Message):
@@ -47,12 +71,15 @@ async def help_handler(message: types.Message):
     """
     await bot.send_message(
         message.from_user.id,
+        "👋 Чтобы начать пользоваться ботом, добавьте его в вашу группу!\n\n"
+        "💡 **Совет:** сделайте бота администратором и разрешите ему удалять сообщения. "
+        "Так он сможет поддерживать чистоту в чате, удаляя лишние команды и служебные сообщения.\n\n"
+        "📋 **Список команд:**\n"
         "/start - Начало работы с ботом \n"
         "/help - Вывести доступные команды\n"
-        "/create_queue - Запланировать очередь (в группе)\n"
-        "/queues_list - Вывести список запланированных очередей\n"
-        "/delete_queue - Удалить запланированную очередь",
-        reply_markup=main_kb
+        "/create\_queue или /plan\_queue - Запланировать очередь (в группе)\n",
+        reply_markup=main_kb,
+        parse_mode="Markdown"
     )
 
 
@@ -159,6 +186,7 @@ def register_client_handlers(dp_: Dispatcher) -> None:
     """
     dp_.register_message_handler(start_handler, commands='start', state=None)
     dp_.register_message_handler(about_dev_handler, Text(equals=ABOUT_DEV_TEXT), state=None)
+    dp_.register_message_handler(help_handler, Text(equals=HELP_TEXT), state=None)
     dp_.register_message_handler(help_handler, commands="help", state=None)
     dp_.register_errors_handler(flood_handler, exception=RetryAfter)
     dp_.register_callback_query_handler(sign_in_queue_handler, Text(startswith='sign_in'), state="*")
