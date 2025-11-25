@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Tuple
 
 conn = None
@@ -143,3 +143,29 @@ async def sql_post_queue_msg_id(queue_id_: int, msg_id_: int):
         "INSERT INTO queue ('id', 'msg_id') VALUES (?, ?)", (queue_id_, msg_id_)
     )
     conn.commit()
+
+
+async def sql_add_user(user_id: int, username: str, first_name: str, last_name: str) -> None:
+    now = datetime.now()
+    cursor.execute(
+        "INSERT INTO users (user_id, username, first_name, last_name, first_seen, last_seen) "
+        "VALUES (?, ?, ?, ?, ?, ?) "
+        "ON CONFLICT(user_id) DO UPDATE SET "
+        "username=excluded.username, "
+        "first_name=excluded.first_name, "
+        "last_name=excluded.last_name, "
+        "last_seen=excluded.last_seen",
+        (user_id, username, first_name, last_name, now, now)
+    )
+    conn.commit()
+
+
+async def sql_get_users_count() -> int:
+    cursor.execute("SELECT COUNT(*) FROM users")
+    return cursor.fetchone()[0]
+
+
+async def sql_get_active_users_count(days: int) -> int:
+    limit_date = datetime.now() - timedelta(days=days)
+    cursor.execute("SELECT COUNT(*) FROM users WHERE last_seen >= ?", (limit_date,))
+    return cursor.fetchone()[0]

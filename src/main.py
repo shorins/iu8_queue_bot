@@ -10,7 +10,10 @@ async def on_startup(_) -> None:
     sqlite_db.start_db()
 
 
+from middlewares.tracking import UserTrackingMiddleware
+
 def main():
+    dp.middleware.setup(UserTrackingMiddleware())
     admin.register_admin_handlers(dp)
     client.register_client_handlers(dp)
     shared.register_shared_handlers(dp)

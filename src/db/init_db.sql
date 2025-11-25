@@ -32,3 +32,13 @@ CREATE TABLE IF NOT EXISTS queue
     id              INTEGER REFERENCES queues_list (id),
     msg_id          INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS users
+(
+    user_id     INTEGER PRIMARY KEY,
+    username    VARCHAR(255),
+    first_name  VARCHAR(255),
+    last_name   VARCHAR(255),
+    first_seen  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_seen   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

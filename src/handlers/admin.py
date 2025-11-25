@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
@@ -7,7 +8,7 @@ from aiogram.types import InlineKeyboardMarkup
 
 from create_bot import dp, bot
 from db.sqlite_db import sql_get_queue_list, sql_add_queue, sql_add_admin, \
-    sql_delete_queue, sql_get_chat_title
+    sql_delete_queue, sql_get_chat_title, sql_get_users_count, sql_get_active_users_count
 from keyboards import admin_kb
 from keyboards.client_kb import PLAN_QUEUE_TEXT, DELETE_QUEUE_TEXT, PLANNED_QUEUES_TEXT
 from services.admin_service import wait_for_queue_launch
@@ -147,11 +148,26 @@ async def delete_queue_handler(callback: types.CallbackQuery, state: FSMContext)
     await state.finish()
 
 
+async def stats_handler(message: types.Message):
+    admins = os.getenv("BOT_ADMINS", "").split(",")
+    if str(message.from_user.id) not in admins:
+        return
+
+    total_count = await sql_get_users_count()
+    active_count = await sql_get_active_users_count(30)
+    await message.reply(
+        f"📊 Статистика пользователей:\n"
+        f"Всего уникальных: {total_count}\n"
+        f"Активных за 30 дней: {active_count}"
+    )
+
+
 def register_admin_handlers(dp_: Dispatcher) -> None:
     """
     Function for registration all handlers for admin.
     :return: None
     """
+    dp_.register_message_handler(stats_handler, commands=['stats'], state=None)
     dp_.register_callback_query_handler(
         cancel_handler, text="cancel_call", state="*"
     )
