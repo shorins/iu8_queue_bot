@@ -9,10 +9,10 @@ async def new_chat_handler(message: types.Message):
     if any(bot.id == member.id for member in message.new_chat_members):
         user = message.from_user
         await sql_add_admin(user.id, user.username)
-        await sql_add_managed_chat(user.id, message.chat.id, message.chat.title)
-        await message.reply(f"Привет! Теперь {user.first_name} (@{user.username}) – "
-                            "администратор очередей в этом чате.\n"
-                            "Запланировать её можно в личном чате со мной. Приятной работы!")
+        await sql_add_managed_chat(message.chat.id, message.chat.title)
+        await message.reply(f"Привет! Я бот для очередей.\n"
+                            "Теперь любой участник может создать очередь прямо здесь.\n"
+                            "Просто напишите /create_queue или /plan_queue.")
 
 
 async def left_chat_handler(message: types.Message):

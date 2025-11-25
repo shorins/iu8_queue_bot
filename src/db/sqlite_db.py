@@ -49,12 +49,7 @@ def sql_get_chat_title(chat_id_: int) -> tuple:
     return cursor.fetchone()
 
 
-def sql_get_managed_chats(admin_id_: int) -> list:
-    cursor.execute(
-        f"SELECT chat_id, chat_title FROM chat WHERE assignee_id = ?", (admin_id_,)
-    )
 
-    return cursor.fetchall()
 
 
 async def sql_add_admin(admin_id_: int, user_name_: str) -> None:
@@ -65,10 +60,10 @@ async def sql_add_admin(admin_id_: int, user_name_: str) -> None:
     conn.commit()
 
 
-async def sql_add_managed_chat(admin_id_: int, chat_id_: int, chat_title_: str) -> None:
+async def sql_add_managed_chat(chat_id_: int, chat_title_: str) -> None:
     cursor.execute(
-        "INSERT INTO chat ('assignee_id', 'chat_id', 'chat_title') VALUES (?, ?, ?)",
-        (admin_id_, chat_id_, chat_title_)
+        "INSERT INTO chat ('chat_id', 'chat_title') VALUES (?, ?)",
+        (chat_id_, chat_title_)
     )
     conn.commit()
 

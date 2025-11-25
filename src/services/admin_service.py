@@ -15,7 +15,8 @@ class EarlierException(Exception):
 
 
 async def wait_for_queue_launch(start_dt: datetime, chat_id: int, queue_id: int) -> None:
-    await asyncio.sleep((start_dt - datetime.now(timezone('Europe/Moscow'))).seconds)
+    # Immediate start, no sleep needed
+
     # Check that queue has not been deleted.
     queue_data = await sql_get_queue_from_list(queue_id)
     if not queue_data:

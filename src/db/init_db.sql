@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS admin
 CREATE TABLE IF NOT EXISTS chat
 (
     id          INTEGER PRIMARY KEY,
-    assignee_id INTEGER REFERENCES admin (admin_id),
     chat_id     INTEGER,
     chat_title  VARCHAR(255)
 );

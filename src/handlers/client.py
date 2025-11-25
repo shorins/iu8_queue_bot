@@ -31,7 +31,7 @@ async def help_handler(message: types.Message):
         message.from_user.id,
         "/start - Начало работы с ботом \n"
         "/help - Вывести доступные команды\n"
-        "/plan_queue - Запланировать очередь\n"
+        "/create_queue - Запланировать очередь (в группе)\n"
         "/queues_list - Вывести список запланированных очередей\n"
         "/delete_queue - Удалить запланированную очередь",
         reply_markup=main_kb
