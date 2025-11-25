@@ -21,32 +21,45 @@ async def start_handler(message: types.Message):
         f"🤖 Я Queue Bot - бот для создания очередей.\n"
         "✨ Важное примечание: я работаю только в групповых чатах 👥.\n"
         "Для создания новой очереди, пожалуйста, добавьте меня в нужную группу "
-        "и используйте команды\n/create_queue или /plan_queue.\n"
+        "и используйте команды\n/create\_queue или /plan\_queue.\n"
         "❓ Если у вас возникнут вопросы или проблемы, пишите @shorinss.\n\n"
         "💡 Если вы хотите, чтобы я мог удалять сообщения настройки очередей, "
-        "пожалуйста, сделайте меня администратором с правом удаления сообщений."
+        "пожалуйста, сделайте меня администратором с правом удаления сообщений.\n\n@QueueBest_bot"
     )
+
+    # Determine target chat and thread
+    target_chat_id = message.chat.id
+    message_thread_id = getattr(message, 'message_thread_id', None)
+    
+    # Use keyboard only in private chats
+    markup = main_kb if message.chat.type == types.ChatType.PRIVATE else None
 
     if logo_file_id:
         try:
             await bot.send_animation(
-                message.from_user.id,
+                target_chat_id,
                 animation=logo_file_id,
                 caption=caption_text,
-                reply_markup=main_kb
+                reply_markup=markup,
+                message_thread_id=message_thread_id,
+                parse_mode="Markdown"
             )
         except Exception:
              # Fallback if ID is invalid
             await bot.send_message(
-                message.from_user.id,
+                target_chat_id,
                 caption_text,
-                reply_markup=main_kb
+                reply_markup=markup,
+                message_thread_id=message_thread_id,
+                parse_mode="Markdown"
             )
     else:
         await bot.send_message(
-            message.from_user.id,
+            target_chat_id,
             caption_text,
-            reply_markup=main_kb
+            reply_markup=markup,
+            message_thread_id=message_thread_id,
+            parse_mode="Markdown"
         )
 
 
@@ -69,8 +82,15 @@ async def help_handler(message: types.Message):
     """
     Handler for `/help` command.
     """
+    # Determine target chat and thread
+    target_chat_id = message.chat.id
+    message_thread_id = getattr(message, 'message_thread_id', None)
+    
+    # Use keyboard only in private chats
+    markup = main_kb if message.chat.type == types.ChatType.PRIVATE else None
+
     await bot.send_message(
-        message.from_user.id,
+        target_chat_id,
         "👋 Чтобы начать пользоваться ботом, добавьте его в вашу группу!\n\n"
         "💡 **Совет:** сделайте бота администратором и разрешите ему удалять сообщения. "
         "Так он сможет поддерживать чистоту в чате, удаляя лишние команды и служебные сообщения.\n\n"
@@ -78,8 +98,9 @@ async def help_handler(message: types.Message):
         "/start - Начало работы с ботом \n"
         "/help - Вывести доступные команды\n"
         "/create\_queue или /plan\_queue - Запланировать очередь (в группе)\n",
-        reply_markup=main_kb,
-        parse_mode="Markdown"
+        reply_markup=markup,
+        parse_mode="Markdown",
+        message_thread_id=message_thread_id
     )
 
 
