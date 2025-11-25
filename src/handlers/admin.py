@@ -57,16 +57,19 @@ async def start_planning(msg: types.Message, state: FSMContext) -> None:
                         "Перейдите в группу и отправьте /create_queue или /plan_queue.")
         return
 
+    prompt_msg = await msg.reply("📝 Введите название новой очереди:",
+                    reply_markup=admin_kb.inl_cancel_kb)
+
     # In group chat, start immediately
+    try:
+        await bot.delete_message(msg.chat.id, msg.message_id)
+    except Exception:
+        pass
+    
     await FSMPlanning.queue_name.set()
     async with state.proxy() as data:
         data['chat_id'] = msg.chat.id
         data['chat_title'] = msg.chat.title
-
-    prompt_msg = await msg.reply("📝 Введите название новой очереди:",
-                    reply_markup=admin_kb.inl_cancel_kb)
-    
-    async with state.proxy() as data:
         data['prompt_msg_id'] = prompt_msg.message_id
 
 
@@ -97,6 +100,12 @@ async def set_queue_name_handler(msg: types.Message, state: FSMContext) -> None:
     # Delete the bot's prompt message
     try:
         await bot.delete_message(chat_id, data.get('prompt_msg_id'))
+    except Exception:
+        pass
+
+    # Delete the user's name message
+    try:
+        await bot.delete_message(chat_id, msg.message_id)
     except Exception:
         pass
 
