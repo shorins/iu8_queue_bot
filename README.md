@@ -28,29 +28,29 @@
 
 ## 📑 Table of Contents / Оглавление
 
-*   [🇬🇧 English Version](#-english-version)
-    *   [Features](#-features)
-    *   [Installation & Run (Docker)](#-installation--run-docker)
-    *   [How to Use](#-how-to-use)
-    *   [Authors](#-authors)
-*   [🇷🇺 Русская версия](#-русская-версия)
-    *   [Особенности](#-особенности)
-    *   [Установка и запуск (Docker)](#-установка-и-запуск-docker)
-    *   [Как пользоваться](#-как-пользоваться)
-    *   [Авторы](#-авторы-1)
+*   [🇬🇧 English Version](#english)
+    *   [Features](#features-en)
+    *   [Installation & Run (Docker)](#install-en)
+    *   [How to Use](#usage-en)
+    *   [Authors](#authors-en)
+*   [🇷🇺 Русская версия](#russian)
+    *   [Особенности](#features-ru)
+    *   [Установка и запуск (Docker)](#install-ru)
+    *   [Как пользоваться](#usage-ru)
+    *   [Авторы](#authors-ru)
 
 ---
 
-# 🇬🇧 English Version
+# <a id="english"></a>🇬🇧 English Version
 
-## ✨ Features
+## <a id="features-en"></a>✨ Features
 
 *   🚀 **Instant Queue Creation**: Just enter the command and the name.
 *   👥 **Groups & Supergroups**: Full support for Topics.
 *   🐳 **Docker**: Easy installation and run with a single command.
 *   📱 **Interactive Interface**: Buttons to join, skip, and move within the queue.
 
-## 🛠 Installation & Run (Docker)
+## <a id="install-en"></a>🛠 Installation & Run (Docker)
 
 The easiest way to run the bot is using Docker.
 
@@ -74,7 +74,7 @@ The easiest way to run the bot is using Docker.
 
 The bot will start and store data in the `db_data` folder.
 
-## 📖 How to Use
+## <a id="usage-en"></a>📖 How to Use
 
 1.  **Add the bot** [@QueueBest_bot](https://t.me/QueueBest_bot) to your group.
 2.  **Grant permissions**: It is recommended to make the bot an administrator to delete service messages.
@@ -83,7 +83,7 @@ The bot will start and store data in the `db_data` folder.
     *   Enter the queue name.
 4.  **Manage**: Use the buttons under the queue message.
 
-## 👨‍💻 Authors
+## <a id="authors-en"></a>👨‍💻 Authors
 
 **Original Project (2021):**
 *   [Alexey Alexandrov](https://github.com/aaaaaaaalesha) — *Initial work & Core logic*
@@ -97,16 +97,16 @@ The bot will start and store data in the `db_data` folder.
 
 ---
 
-# 🇷🇺 Русская версия
+# <a id="russian"></a>🇷🇺 Русская версия
 
-## ✨ Особенности
+## <a id="features-ru"></a>✨ Особенности
 
 *   🚀 **Мгновенное создание очередей**: просто введите команду и название.
 *   👥 **Работа в группах и супергруппах**: полная поддержка топиков (Topics).
 *   🐳 **Docker**: легкая установка и запуск одной командой.
 *   📱 **Интерактивный интерфейс**: кнопки для записи, пропуска и перемещения в очереди.
 
-## 🛠 Установка и запуск (Docker)
+## <a id="install-ru"></a>🛠 Установка и запуск (Docker)
 
 Самый простой способ запустить бота — использовать Docker.
 
@@ -130,7 +130,7 @@ The bot will start and store data in the `db_data` folder.
 
 Бот запустится и будет хранить данные в папке `db_data`.
 
-## 📖 Как пользоваться
+## <a id="usage-ru"></a>📖 Как пользоваться
 
 1.  **Добавьте бота** [@QueueBest_bot](https://t.me/QueueBest_bot) в вашу группу.
 2.  **Дайте права**: рекомендуется сделать бота администратором для удаления служебных сообщений.
@@ -139,7 +139,7 @@ The bot will start and store data in the `db_data` folder.
     *   Введите название очереди.
 4.  **Управляйте**: используйте кнопки под сообщением очереди.
 
-## 👨‍💻 Авторы
+## <a id="authors-ru"></a>👨‍💻 Авторы
 
 **Оригинальный проект (2021):**
 *   [Alexey Alexandrov](https://github.com/aaaaaaaalesha) — *Идея и базовая логика*
