@@ -3,8 +3,21 @@ import sqlite3
 from datetime import datetime
 from typing import Tuple
 
-conn = sqlite3.connect('queue_bot.db')
-cursor = conn.cursor()
+conn = None
+cursor = None
+
+def init_connection():
+    global conn, cursor
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # src
+    db_path = os.path.join(base_dir, 'db_data', 'queue_bot.db')
+    
+    # Ensure directory exists
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+init_connection()
 
 
 def start_db() -> None:
@@ -16,6 +29,15 @@ def start_db() -> None:
 
     cursor.executescript(sql_script)
     conn.commit()
+
+    # Migration for message_thread_id
+    try:
+        cursor.execute("ALTER TABLE queues_list ADD COLUMN message_thread_id INTEGER DEFAULT NULL")
+        conn.commit()
+        print("Added message_thread_id column to queues_list")
+    except sqlite3.OperationalError:
+        # Column likely already exists
+        pass
 
     if conn:
         print("Data base has been connected!")
@@ -77,10 +99,10 @@ async def sql_delete_managed_chat(chat_id_: int) -> None:
     conn.commit()
 
 
-async def sql_add_queue(admin_id_: int, queue_name_: str, start_dt: datetime, chat_id_: int, chat_title_: str) -> tuple:
+async def sql_add_queue(admin_id_: int, queue_name_: str, start_dt: datetime, chat_id_: int, chat_title_: str, message_thread_id_: int = None) -> tuple:
     cursor.execute(
-        "INSERT INTO queues_list ('assignee_id', 'queue_name', 'start', 'chat_id', 'chat_title') "
-        "VALUES (?, ?, ?, ?, ?)", (admin_id_, queue_name_, start_dt, chat_id_, chat_title_)
+        "INSERT INTO queues_list ('assignee_id', 'queue_name', 'start', 'chat_id', 'chat_title', 'message_thread_id') "
+        "VALUES (?, ?, ?, ?, ?, ?)", (admin_id_, queue_name_, start_dt, chat_id_, chat_title_, message_thread_id_)
     )
     conn.commit()
 

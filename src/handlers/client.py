@@ -180,21 +180,6 @@ async def push_tail_handler(callback: types.CallbackQuery):
     await callback.message.edit_text(text=new_text, reply_markup=queue_inl_kb)
 
 
-def register_client_handlers(dp_: Dispatcher) -> None:
-    """
-    Function registers all handlers for client.
-    """
-    dp_.register_message_handler(start_handler, commands='start', state=None)
-    dp_.register_message_handler(about_dev_handler, Text(equals=ABOUT_DEV_TEXT), state=None)
-    dp_.register_message_handler(help_handler, Text(equals=HELP_TEXT), state=None)
-    dp_.register_message_handler(help_handler, commands="help", state=None)
-    
-    # Admin utility to get file ID from reply
-    dp_.register_message_handler(get_file_id_handler, commands=['get_file_id'], state=None)
-    
-    dp_.register_errors_handler(flood_handler, exception=RetryAfter)
-
-
 async def get_file_id_handler(message: types.Message):
     if not message.reply_to_message:
         await message.reply("Ответьте этой командой на сообщение с файлом/анимацией.")
@@ -211,13 +196,30 @@ async def get_file_id_handler(message: types.Message):
         await message.reply(f"Photo ID: `{msg.photo[-1].file_id}`", parse_mode="Markdown")
     else:
         await message.reply("Не вижу медиа в сообщении.")
-    dp_.register_callback_query_handler(sign_in_queue_handler, Text(startswith='sign_in'), state="*")
-    dp_.register_callback_query_handler(sign_out_queue_handler, Text(startswith='sign_out'), state="*")
-    dp_.register_callback_query_handler(skip_ahead_handler, Text(startswith='skip_ahead'), state="*")
-    dp_.register_callback_query_handler(push_tail_handler, Text(startswith='in_tail'), state="*")
-    dp_.register_message_handler(private_chat_handler, content_types=types.ContentTypes.ANY, state=None)
 
 
 async def private_chat_handler(message: types.Message):
     if message.chat.type == types.ChatType.PRIVATE:
         await start_handler(message)
+
+
+def register_client_handlers(dp_: Dispatcher) -> None:
+    """
+    Function registers all handlers for client.
+    """
+    dp_.register_message_handler(start_handler, commands='start', state=None)
+    dp_.register_message_handler(about_dev_handler, Text(equals=ABOUT_DEV_TEXT), state=None)
+    dp_.register_message_handler(help_handler, Text(equals=HELP_TEXT), state=None)
+    dp_.register_message_handler(help_handler, commands="help", state=None)
+    
+    # Admin utility to get file ID from reply
+    dp_.register_message_handler(get_file_id_handler, commands=['get_file_id'], state=None)
+    
+    dp_.register_errors_handler(flood_handler, exception=RetryAfter)
+
+    dp_.register_callback_query_handler(sign_in_queue_handler, Text(startswith='sign_in'), state="*")
+    dp_.register_callback_query_handler(sign_out_queue_handler, Text(startswith='sign_out'), state="*")
+    dp_.register_callback_query_handler(skip_ahead_handler, Text(startswith='skip_ahead'), state="*")
+    dp_.register_callback_query_handler(push_tail_handler, Text(startswith='in_tail'), state="*")
+    
+    dp_.register_message_handler(private_chat_handler, content_types=types.ContentTypes.ANY, state=None)

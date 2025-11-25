@@ -14,19 +14,21 @@ class EarlierException(Exception):
     pass
 
 
-async def wait_for_queue_launch(start_dt: datetime, chat_id: int, queue_id: int) -> None:
+async def wait_for_queue_launch(start_dt: datetime, chat_id: int, queue_id: int, message_thread_id: int = None) -> None:
     # Immediate start, no sleep needed
 
     # Check that queue has not been deleted.
     queue_data = await sql_get_queue_from_list(queue_id)
     if not queue_data:
         await bot.send_message(chat_id,
-                               f"🗑 Кажется, запланированную на это время очередь, удалили :(")
+                               f"🗑 Кажется, запланированную на это время очередь, удалили :(",
+                               message_thread_id=message_thread_id)
         return
 
     msg = await bot.send_message(chat_id,
                                  f"🍦 Очередь «{queue_data[2]}»",
-                                 reply_markup=client_kb.queue_inl_kb
+                                 reply_markup=client_kb.queue_inl_kb,
+                                 message_thread_id=message_thread_id
                                  )
     try:
         await msg.pin(disable_notification=False)

@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS queues_list
     queue_name  VARCHAR(255),
     start       TIMESTAMP,
     chat_id     INTEGER,
-    chat_title  VARCHAR(255)
+    chat_title  VARCHAR(255),
+    message_thread_id INTEGER DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS queue

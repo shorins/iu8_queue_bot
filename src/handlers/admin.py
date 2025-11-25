@@ -71,6 +71,7 @@ async def start_planning(msg: types.Message, state: FSMContext) -> None:
         data['chat_id'] = msg.chat.id
         data['chat_title'] = msg.chat.title
         data['prompt_msg_id'] = prompt_msg.message_id
+        data['message_thread_id'] = getattr(msg, 'message_thread_id', None)
 
 
 async def queue_plan_handler(msg: types.Message, state: FSMContext) -> None:
@@ -95,7 +96,8 @@ async def set_queue_name_handler(msg: types.Message, state: FSMContext) -> None:
     
     # Add to DB
     chat_id, chat_title = data['chat_id'], data['chat_title']
-    queue_id = await sql_add_queue(msg.from_user.id, msg.text, start_datetime, chat_id, chat_title)
+    message_thread_id = data.get('message_thread_id')
+    queue_id = await sql_add_queue(msg.from_user.id, msg.text, start_datetime, chat_id, chat_title, message_thread_id)
 
     # Delete the bot's prompt message
     try:
@@ -110,7 +112,7 @@ async def set_queue_name_handler(msg: types.Message, state: FSMContext) -> None:
         pass
 
     await state.finish()
-    await wait_for_queue_launch(start_datetime, chat_id, queue_id[0])
+    await wait_for_queue_launch(start_datetime, chat_id, queue_id[0], message_thread_id)
 
 
 """ Deleting queue zone"""
