@@ -5,12 +5,12 @@ from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import InlineKeyboardMarkup
 
-from src.create_bot import dp, bot
-from src.db.sqlite_db import sql_get_queue_list, sql_add_queue, sql_add_admin, \
+from create_bot import dp, bot
+from db.sqlite_db import sql_get_queue_list, sql_add_queue, sql_add_admin, \
     sql_delete_queue, sql_get_managed_chats, sql_get_chat_title
-from src.keyboards import admin_kb, calendar_kb
-from src.keyboards.client_kb import PLAN_QUEUE_TEXT, DELETE_QUEUE_TEXT, PLANNED_QUEUES_TEXT
-from src.services.admin_service import EarlierException, parse_to_datetime, wait_for_queue_launch
+from keyboards import admin_kb, calendar_kb
+from keyboards.client_kb import PLAN_QUEUE_TEXT, DELETE_QUEUE_TEXT, PLANNED_QUEUES_TEXT
+from services.admin_service import EarlierException, parse_to_datetime, wait_for_queue_launch
 
 
 class FSMPlanning(StatesGroup):

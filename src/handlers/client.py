@@ -4,9 +4,9 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.utils.exceptions import RetryAfter
 
-from src.create_bot import dp, bot
-from src.keyboards.client_kb import main_kb, queue_inl_kb
-from src.services import client_service
+from create_bot import dp, bot
+from keyboards.client_kb import main_kb, queue_inl_kb
+from services import client_service
 
 
 async def start_handler(message: types.Message):

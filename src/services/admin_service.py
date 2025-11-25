@@ -5,9 +5,9 @@ from pytz import timezone
 import asyncio
 from aiogram.utils.exceptions import BadRequest
 
-from src.create_bot import bot
-from src.db.sqlite_db import sql_get_queue_from_list, sql_post_queue_msg_id
-from src.keyboards import client_kb
+from create_bot import bot
+from db.sqlite_db import sql_get_queue_from_list, sql_post_queue_msg_id
+from keyboards import client_kb
 
 
 class EarlierException(Exception):

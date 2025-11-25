@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-load_dotenv('.env')
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

@@ -1,7 +1,7 @@
 from aiogram import types, Dispatcher
 
-from src.create_bot import dp, bot
-from src.db.sqlite_db import sql_add_admin, sql_add_managed_chat, sql_delete_managed_chat
+from create_bot import dp, bot
+from db.sqlite_db import sql_add_admin, sql_add_managed_chat, sql_delete_managed_chat
 
 
 async def new_chat_handler(message: types.Message):
