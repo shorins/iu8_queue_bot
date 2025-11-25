@@ -1,0 +1,65 @@
+# Инструкция по развертыванию на Ubuntu 22.04
+
+## 1. Подготовка сервера
+
+Подключитесь к серверу по SSH и обновите пакеты:
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+Установите Docker и Docker Compose:
+```bash
+sudo apt install docker.io docker-compose -y
+```
+
+Запустите и включите Docker:
+```bash
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+## 2. Установка бота
+
+Клонируйте репозиторий (или загрузите файлы любым удобным способом):
+```bash
+git clone https://github.com/aaaaaaaalesha/iu8_queue_bot.git
+cd iu8_queue_bot
+```
+
+Создайте файл настроек `.env`:
+```bash
+cp .env.example .env
+nano .env
+```
+*Вставьте ваш токен бота в открывшемся редакторе (Ctrl+O для сохранения, Enter, Ctrl+X для выхода).*
+
+## 3. Запуск
+
+Запустите бота в фоновом режиме:
+```bash
+sudo docker-compose up -d --build
+```
+
+## 4. База данных и очистка
+
+**Где хранится база?**
+База данных SQLite хранится в файле `queue_bot.db`.
+В `docker-compose.yml` настроен **volume** (том), который пробрасывает папку из контейнера наружу:
+```yaml
+volumes:
+  - ./db_data:/app/src/db_data
+```
+Это означает, что файл базы данных физически находится на вашем сервере в папке `iu8_queue_bot/db_data`. Даже если вы удалите контейнер, база останется.
+
+**Как удалить всё подчистую?**
+Если вы хотите полностью удалить бота и его данные с сервера:
+
+1. Остановите контейнер:
+   ```bash
+   sudo docker-compose down
+   ```
+2. Удалите папку проекта (вместе с базой данных):
+   ```bash
+   cd ..
+   rm -rf iu8_queue_bot
+   ```

@@ -8,10 +8,8 @@ cursor = conn.cursor()
 
 
 def start_db() -> None:
-    if os.getenv('DEBUG', 'True') == 'True':
-        sql_file_path = 'db/init_db.sql'
-    else:
-        sql_file_path = '/app/src/db/init_db.sql'
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    sql_file_path = os.path.join(base_dir, 'init_db.sql')
 
     with open(sql_file_path, 'r') as sql_file:
         sql_script = sql_file.read()
