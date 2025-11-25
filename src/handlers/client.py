@@ -188,7 +188,29 @@ def register_client_handlers(dp_: Dispatcher) -> None:
     dp_.register_message_handler(about_dev_handler, Text(equals=ABOUT_DEV_TEXT), state=None)
     dp_.register_message_handler(help_handler, Text(equals=HELP_TEXT), state=None)
     dp_.register_message_handler(help_handler, commands="help", state=None)
+    
+    # Admin utility to get file ID from reply
+    dp_.register_message_handler(get_file_id_handler, commands=['get_file_id'], state=None)
+    
     dp_.register_errors_handler(flood_handler, exception=RetryAfter)
+
+
+async def get_file_id_handler(message: types.Message):
+    if not message.reply_to_message:
+        await message.reply("Ответьте этой командой на сообщение с файлом/анимацией.")
+        return
+
+    msg = message.reply_to_message
+    if msg.animation:
+        await message.reply(f"Animation ID: `{msg.animation.file_id}`", parse_mode="Markdown")
+    elif msg.video:
+        await message.reply(f"Video ID: `{msg.video.file_id}`", parse_mode="Markdown")
+    elif msg.document:
+        await message.reply(f"Document ID: `{msg.document.file_id}`", parse_mode="Markdown")
+    elif msg.photo:
+        await message.reply(f"Photo ID: `{msg.photo[-1].file_id}`", parse_mode="Markdown")
+    else:
+        await message.reply("Не вижу медиа в сообщении.")
     dp_.register_callback_query_handler(sign_in_queue_handler, Text(startswith='sign_in'), state="*")
     dp_.register_callback_query_handler(sign_out_queue_handler, Text(startswith='sign_out'), state="*")
     dp_.register_callback_query_handler(skip_ahead_handler, Text(startswith='skip_ahead'), state="*")
