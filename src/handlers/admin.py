@@ -63,8 +63,11 @@ async def start_planning(msg: types.Message, state: FSMContext) -> None:
         data['chat_id'] = msg.chat.id
         data['chat_title'] = msg.chat.title
 
-    await msg.reply("📝 Введите название новой очереди:",
+    prompt_msg = await msg.reply("📝 Введите название новой очереди:",
                     reply_markup=admin_kb.inl_cancel_kb)
+    
+    async with state.proxy() as data:
+        data['prompt_msg_id'] = prompt_msg.message_id
 
 
 async def queue_plan_handler(msg: types.Message, state: FSMContext) -> None:
@@ -91,10 +94,11 @@ async def set_queue_name_handler(msg: types.Message, state: FSMContext) -> None:
     chat_id, chat_title = data['chat_id'], data['chat_title']
     queue_id = await sql_add_queue(msg.from_user.id, msg.text, start_datetime, chat_id, chat_title)
 
-    await msg.reply(
-        f"✅Очередь «{msg.text}» создана и запущена!\n"
-        f"Начало: {start_datetime.strftime('%d.%m.%Y в %H:%M')}"
-    )
+    # Delete the bot's prompt message
+    try:
+        await bot.delete_message(chat_id, data.get('prompt_msg_id'))
+    except Exception:
+        pass
 
     await state.finish()
     await wait_for_queue_launch(start_datetime, chat_id, queue_id[0])
