@@ -13,6 +13,12 @@
 </p>
 
 <p align="center">
+  <a href="https://t.me/QueueBest_bot">
+    <img src="public/open_in_telegram.png" alt="Open in Telegram" width="200"/>
+  </a>
+</p>
+
+<p align="center">
     <b>Modern and convenient bot for managing queues in Telegram group chats.</b>
     <br>
     <b>Современный и удобный бот для управления очередями в групповых чатах Telegram.</b>

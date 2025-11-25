@@ -137,3 +137,5 @@ src/queue_bot.db
 identifier.sqlite
 
 db_data/
+
+.DS_Store
