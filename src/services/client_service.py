@@ -14,11 +14,11 @@ async def add_queuer_text(old_text: str, first_name: str, username: str) -> Tupl
     lines = old_text.split('\n')
 
     match_str = f"{first_name} (@{username})"
-    for i in range(2, len(lines)):
+    for i in range(1, len(lines)):
         if lines[i].rfind(match_str) != -1:
             return str(), STATUS_ALREADY_IN
 
-    lines.append(f"{len(lines) - 1}. {match_str}")
+    lines.append(f"{len(lines)}. {match_str}")
 
     return '\n'.join(lines), STATUS_OK
 
@@ -27,11 +27,11 @@ async def delete_queuer_text(old_text: str, first_name: str, username: str) -> T
     lines = old_text.split('\n')
 
     match_str = f"{first_name} (@{username})"
-    if len(lines) == 2:
+    if len(lines) == 1:
         return str(), STATUS_NO_QUEUERS
     else:
         index_changer = -1
-        for i in range(2, len(lines)):
+        for i in range(1, len(lines)):
             if lines[i].rfind(match_str) != -1:
                 lines.pop(i)
                 index_changer = i
@@ -45,7 +45,7 @@ async def delete_queuer_text(old_text: str, first_name: str, username: str) -> T
             return '\n'.join(lines), STATUS_OK
 
         for i in range(index_changer, len(lines)):
-            lines[i] = lines[i].replace(f"{i}. ", f"{i - 1}. ", 1)
+            lines[i] = lines[i].replace(f"{i + 1}. ", f"{i}. ", 1)
 
     return '\n'.join(lines), STATUS_OK
 
@@ -53,15 +53,15 @@ async def delete_queuer_text(old_text: str, first_name: str, username: str) -> T
 async def skip_ahead(old_text: str, first_name: str, username: str) -> Tuple[str, int]:
     lines = old_text.split('\n')
 
-    if len(lines) == 2:
+    if len(lines) == 1:
         return str(), STATUS_NO_QUEUERS
 
-    if len(lines) == 3:
+    if len(lines) == 2:
         return str(), STATUS_ONE_QUEUER
 
     index_changer = -1
     match_str = f"{first_name} (@{username})"
-    for i in range(2, len(lines)):
+    for i in range(1, len(lines)):
         if lines[i].rfind(match_str) != -1:
             if i == len(lines) - 1:
                 return str(), STATUS_NO_AFTER
@@ -71,8 +71,8 @@ async def skip_ahead(old_text: str, first_name: str, username: str) -> Tuple[str
     if index_changer == -1:
         return str(), STATUS_NOT_QUEUER
 
-    lines[index_changer] = lines[index_changer].replace(f"{index_changer - 1}. ", f"{index_changer}. ", 1)
-    lines[index_changer + 1] = lines[index_changer + 1].replace(f"{index_changer}. ", f"{index_changer - 1}. ", 1)
+    lines[index_changer] = lines[index_changer].replace(f"{index_changer}. ", f"{index_changer + 1}. ", 1)
+    lines[index_changer + 1] = lines[index_changer + 1].replace(f"{index_changer + 1}. ", f"{index_changer}. ", 1)
 
     # Swap.
     lines[index_changer], lines[index_changer + 1] = lines[index_changer + 1], lines[index_changer]
@@ -83,17 +83,17 @@ async def skip_ahead(old_text: str, first_name: str, username: str) -> Tuple[str
 async def push_tail(old_text: str, first_name: str, username: str) -> Tuple[str, int]:
     lines = old_text.split('\n')
 
-    if len(lines) == 2:
+    if len(lines) == 1:
         return str(), STATUS_NO_QUEUERS
 
-    if len(lines) == 3:
+    if len(lines) == 2:
         return str(), STATUS_ONE_QUEUER
 
     index_changer = -1
     del_queuer = str()
 
     match_str = f"{first_name} (@{username})"
-    for i in range(2, len(lines)):
+    for i in range(1, len(lines)):
         if lines[i].rfind(match_str) != -1:
             if i + 1 == len(lines):
                 return str(), STATUS_NO_AFTER
@@ -105,8 +105,8 @@ async def push_tail(old_text: str, first_name: str, username: str) -> Tuple[str,
         return str(), STATUS_NOT_QUEUER
 
     for i in range(index_changer, len(lines)):
-        lines[i] = lines[i].replace(f"{i}. ", f"{i - 1}. ", 1)
+        lines[i] = lines[i].replace(f"{i + 1}. ", f"{i}. ", 1)
 
-    lines.append(del_queuer.replace(f"{index_changer - 1}. ", f"{len(lines) - 1}. ", 1))
+    lines.append(del_queuer.replace(f"{index_changer}. ", f"{len(lines)}. ", 1))
 
     return '\n'.join(lines), STATUS_OK
