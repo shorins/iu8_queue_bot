@@ -5,7 +5,7 @@ from aiogram.dispatcher.filters import Text
 from aiogram.utils.exceptions import RetryAfter
 
 from create_bot import dp, bot
-from keyboards.client_kb import main_kb, queue_inl_kb
+from keyboards.client_kb import main_kb, queue_inl_kb, ABOUT_DEV_TEXT
 from services import client_service
 
 
@@ -14,13 +14,31 @@ async def start_handler(message: types.Message):
     Handler for `/start` command.
     """
     await bot.send_message(message.from_user.id,
-                           f"Привет, {message.from_user.first_name} (@{message.from_user.username})!\n"
-                           f"Я IU8-QueueBot - бот для создания очередей.\n"
-                           "Давайте начнём: можете использовать команды (/help) "
-                           f"или кнопки клавиатуры для работы со мной. В случае возникновения проблем, пишите "
-                           f"@aaaaaaaalesha",
+                           f"👋 Привет, {message.from_user.first_name} (@{message.from_user.username})!\n"
+                           f"🤖 Я Queue Bot - бот для создания очередей.\n"
+                           "✨ Важное примечание: я работаю только в групповых чатах 👥.\n"
+                           "Для создания новой очереди, пожалуйста, добавьте меня в нужную группу "
+                           "и используйте команды /create_queue или /plan_queue.\n"
+                           "❓ Если у вас возникнут вопросы или проблемы, пишите @shorinss.\n\n"
+                           "💡 Если вы хотите, чтобы я мог удалять сообщения настройки очередей, "
+                           "пожалуйста, сделайте меня администратором с правом удаления сообщений.",
                            reply_markup=main_kb
                            )
+
+
+async def about_dev_handler(message: types.Message):
+    """
+    Handler for showing information about the developer.
+    """
+    await message.answer(
+        "👋 Привет, я Серёжа, разработал этого ботика для очередей в группах.\n"
+        "Наверное у всех было, что нужно в коллективе занять очередь, но было сложно отследить, кто каким хочет быть.\n"
+        "Так вот, пользуйтесь на здоровье!\n\n"
+        "Мои контакты:\n"
+        "✈️ Telegram: @shorinss\n"
+        "📧 Почта: mighty.shorin@ya.ru\n"
+        "🐙 GitHub: https://github.com/shorins"
+    )
 
 
 async def help_handler(message: types.Message):
@@ -140,9 +158,16 @@ def register_client_handlers(dp_: Dispatcher) -> None:
     Function registers all handlers for client.
     """
     dp_.register_message_handler(start_handler, commands='start', state=None)
+    dp_.register_message_handler(about_dev_handler, Text(equals=ABOUT_DEV_TEXT), state=None)
     dp_.register_message_handler(help_handler, commands="help", state=None)
     dp_.register_errors_handler(flood_handler, exception=RetryAfter)
     dp_.register_callback_query_handler(sign_in_queue_handler, Text(startswith='sign_in'), state="*")
     dp_.register_callback_query_handler(sign_out_queue_handler, Text(startswith='sign_out'), state="*")
     dp_.register_callback_query_handler(skip_ahead_handler, Text(startswith='skip_ahead'), state="*")
     dp_.register_callback_query_handler(push_tail_handler, Text(startswith='in_tail'), state="*")
+    dp_.register_message_handler(private_chat_handler, content_types=types.ContentTypes.ANY, state=None)
+
+
+async def private_chat_handler(message: types.Message):
+    if message.chat.type == types.ChatType.PRIVATE:
+        await start_handler(message)

@@ -4,10 +4,10 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 PLAN_QUEUE_TEXT = "📌 Запланировать очередь"
 DELETE_QUEUE_TEXT = "🗑 Удалить очередь"
 PLANNED_QUEUES_TEXT = "🗒 Список запланированных очередей"
+ABOUT_DEV_TEXT = "👨‍💻 О разработчике"
 
 main_kb = ReplyKeyboardMarkup(resize_keyboard=True)
-main_kb.row(KeyboardButton(PLAN_QUEUE_TEXT), KeyboardButton(DELETE_QUEUE_TEXT))
-main_kb.add(KeyboardButton(PLANNED_QUEUES_TEXT))
+main_kb.add(KeyboardButton(ABOUT_DEV_TEXT))
 
 queue_inl_kb = InlineKeyboardMarkup(row_width=2)
 queue_inl_kb.row(
